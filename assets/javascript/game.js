@@ -13,37 +13,42 @@ var wrongLetter = [];
 function StartGame(){
     //picks random word.
     randWord = wordBank[Math.floor(Math.random() * wordBank.length)];
-    console.log(randWord);
+    //console.log(randWord);
+    randWord = randWord.split("");
+    //console.log(randWord);
     for(var i = 0; i < randWord.length; i++){
        underscore.push('_');
-       console.log(randWord);
     }
+    console.log(randWord);
     document.getElementById('underscore').innerHTML = underscore;
     
     
+    
     document.onkeyup = function(event) {
-        guessesLeft = 12;
-        wrongletter = [];
+    
         userGuess = String.fromCharCode(event.keyCode).
         toLowerCase();
         console.log(userGuess);
         //checking if letter exist inside word.
-        if(randWord.indexOf(userGuess) > -1){
+        if(guessesLeft > 0){
             for(var i = 0; i < randWord.length; i ++){
                 if(randWord[i] === userGuess){
-                    randWord[i] = userGuess;
+                    underscore.splice(i, 1, userGuess);
                     //console.log(userGuess);
                     //console.log(randWord[i]);
-                    document.getElementById('underscore').innerHTML = randWord[i];
+                    document.getElementById('underscore').innerHTML = underscore;
                 }
-                else{
+                if(randWord[i] !== userGuess){
                     wrongLetter.push(userGuess);
                     guessesLeft --;
                     document.getElementById('wrongGuess').innerHTML = wrongLetter;
-                    document.getElementById('triesLeft').innerHTML = guessesLeft;
+                    document.getElementById('triesLeft').innerHTML = "guesses left " + guessesLeft;
                 }
-    
             }
+        }
+
+        else{
+            loss ++;
         }
         //document.getElementById('wrongGuess').innerHTML = wrongLetter;
     }
